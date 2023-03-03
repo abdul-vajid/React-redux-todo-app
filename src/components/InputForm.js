@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa"
+import { useDispatch, useSelector } from "react-redux";
+import { addTodos } from "../reduxStore/TodoSlice";
 import ErrMsg from "./msg/ErrMsg";
 import SuccessMsg from "./msg/SuccessMsg";
 import TodoList from "./TodoList";
 
 function InputForm() {
+  const dispatch = useDispatch()
+  const todosItem = useSelector((state)=> state.todos.todosList)
   const [todoValue, setTodoValue] = useState("");
-  const [Category, setCategory] = useState("");
-  const [currentTodo, setcurrentTodo] = useState("")
+  const [category, setCategory] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [showErr, setShowErr] = useState(false);
@@ -36,17 +39,23 @@ function InputForm() {
       setErrMsg("Please write your todo!")
       setShowErr(true)
       setShowSuccess(false)
-    } else if (Category === ""){
+    } else if (category === ""){
       setErrMsg("Please choose category!")
       setShowErr(true)
       setShowSuccess(false)
-    } else if ( Category === "Categories") {
+    } else if ( category === "Categories") {
       setErrMsg("Please choose valid category!")
       setShowErr(true)
       setShowSuccess(false)
     }
     else {
-      setcurrentTodo(todoValue)
+      dispatch(
+        addTodos({
+          _id: Math.random(),
+          todo:todoValue,
+          category:category
+        })
+      )
       setTodoValue("")
       setShowSuccess(true)
       setShowErr(false)
@@ -91,7 +100,14 @@ function InputForm() {
       h-10 uppercase rounded-md">Add todo</button>
       <div className="flex flex-col gap-4">
         <ul className="grid grid-cols-1 gap-4 border border-gray-600 shadow-todoShadow mt-6 p-4">
-          <TodoList todoValue = {currentTodo}/>
+          {
+            todosItem.length > 0 ? <>{
+              todosItem.map((item) => (
+                <TodoList key={item._id} todo={item.todo} _id={item._id}/>
+              ))
+            }</> : <p className="text-center text-base text-yellow-500 font-tit
+             font-medium tracking-wide">Your todo list is empty</p>
+          }
         </ul>
       </div>
       {showErr && <ErrMsg errMsg={errMsg} />}

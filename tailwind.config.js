@@ -13,7 +13,7 @@ module.exports = {
           titleFont: ["Montserrat", "sans-serif"]
         },
         boxShadow: {
-          todoShadow: "0px 0px 20px 4px rgba(11,4,209,1)",
+          todoShadow: "0 3px 10px rgba(0, 0, 0, 0.2)",
         } 
       },
     },
