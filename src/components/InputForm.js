@@ -53,7 +53,7 @@ function InputForm() {
         addTodos({
           _id: Math.random(),
           todo:todoValue,
-          category:category
+          category:category,
         })
       )
       setTodoValue("")
@@ -103,7 +103,7 @@ function InputForm() {
           {
             todosItem.length > 0 ? <>{
               todosItem.map((item) => (
-                <TodoList key={item._id} todo={item.todo} _id={item._id}/>
+                <TodoList key={item._id} todo={item.todo} _id={item._id} category={item.category}/>
               ))
             }</> : <p className="text-center text-base text-yellow-500 font-tit
              font-medium tracking-wide">Your todo list is empty</p>
